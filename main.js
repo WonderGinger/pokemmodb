@@ -1,6 +1,5 @@
-const electron = require('electron')
-
 const {app, BrowserWindow} = require('electron')
+const fs = require('fs')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -12,6 +11,11 @@ function createWindow () {
 
   // and load the index.html of the app.
   win.loadFile('index.html')
+  fs.readFile('./pokedex/b2w2_raw.json', 'utf8', (err, data) => {
+    if (err) {
+      return console.log(err)
+    }
+  })
 
   // Open the DevTools.
   win.webContents.openDevTools()

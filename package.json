@@ -4,10 +4,11 @@
   "description": "A competitively oriented database for the PokeMMO format",
   "main": "main.js",
   "scripts": {
-    "start": "standard && electron ."
+    "start": "electron ."
   },
   "devDependencies": {
-    "standard": "*"
+    "electron": "^2.0.3",
+    "standard": "^11.0.1"
   },
   "repository": {
     "type": "git",
@@ -25,8 +26,8 @@
     "url": "https://github.com/WonderGinger/pokemmodb/issues"
   },
   "homepage": "https://github.com/WonderGinger/pokemmodb#readme",
-  "devDependencies": {
-    "electron": "^2.0.3",
-    "standard": "^11.0.1"
+  "dependencies": {
+    "bootstrap": "^4.1.1",
+    "jquery": "^3.3.1"
   }
 }
