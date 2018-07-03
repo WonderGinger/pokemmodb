@@ -1,0 +1,25 @@
+{
+  "name": "pokemmodb",
+  "version": "1.0.0",
+  "description": "A competitively oriented database for the PokeMMO format",
+  "main": "index.js",
+  "scripts": {
+    "test": "make pokemmodb"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WonderGinger/pokemmodb.git"
+  },
+  "keywords": [
+    "pokemmo",
+    "pokemmodb",
+    "pokemon",
+    "poke"
+  ],
+  "author": "Brandt Willems",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WonderGinger/pokemmodb/issues"
+  },
+  "homepage": "https://github.com/WonderGinger/pokemmodb#readme"
+}
