@@ -2,7 +2,7 @@ const $ = require('jquery')
 var Pokedex = require('pokedex-promise-v2')
 var Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs'))
-var pokedex0_75
+var pokedex150to237 = []
 var jsonEntries
 let options = {
   protocol: 'https',
@@ -18,6 +18,7 @@ function getMon (id) {
   P.getPokemonByName(id)
     .then(function (response) {
       console.log(response)
+      pokedex150to237.push(response)
       return response
     })
     .catch(function (error) {
@@ -29,7 +30,7 @@ function getDex (entries) {
   let promises = []
   let i = 1
   let end = 75
-  for (let entry of entries) {
+  for (let entry of entries.slice(150)) {
     promises.push(getMon(entry.id))
     i++
     if (i > end) return Promise.all(promises)
@@ -50,8 +51,10 @@ window.onload = () => {
 
     getDex(pokemmoMin).then((pokedex) => {
       console.log(pokedex)
-      pokedex1_75 = pokedex
+      // pokedex1to75 = pokedex
       doneWriting = true
+    }, (err) => {
+      throw err
     })
   }, (err) => {
     throw err
@@ -59,5 +62,5 @@ window.onload = () => {
 }
 
 function saveDex () {
-  fs.writeFile('./app/pokedex/dex_0-75.txt', JSON.stringify(pokedex0_75), (err) => { console.log('Failed to save', err) })
+  fs.writeFile('./app/pokedex/pokedex150-237.txt', JSON.stringify(pokedex150to237), (err) => { console.log('Failed to save', err) })
 }
