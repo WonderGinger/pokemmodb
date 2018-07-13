@@ -23,7 +23,7 @@ function populateTable (pokedex) {
       types += `<span class="type ${type.type.name}">${type.type.name}</span></br>`
     }
     trHTML += '<tr><td class="align-middle">' + pokedex[i].id +
-      '</td><td class="align-middle">' + name + '</td>' +
+      '</td><td class="align-middle">' + `<a href="https://pokemondb.net/pokedex/${name}">${name}</a>` + '</td>' +
       '</td><td class="align-middle">' + types + '</td>' +
       '</td><td class="align-middle">' + total + '</td>' +
       '</td><td class="align-middle">' + pokedex[i].stats[5].base_stat + '</td>' +
