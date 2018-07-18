@@ -1,5 +1,5 @@
 {
-  "name": "PokemmoDB",
+  "name": "pokemmodb",
   "productName": "PokemmoDB",
   "version": "1.0.0",
   "description": "A competitively oriented database for the PokeMMO format",
@@ -9,8 +9,8 @@
   },
   "devDependencies": {
     "electron": "^2.0.4",
-    "electron-builder": "latest",
-    "standard": "^11.0.1"
+    "electron-builder": "^20.22.0",
+    "electron-packager": "^12.1.0"
   },
   "repository": {
     "type": "git",
@@ -23,22 +23,18 @@
     "poke"
   ],
   "author": "Brandt Willems",
-  "license": "ISC",
+  "license": "CC0-1.0",
   "bugs": {
     "url": "https://github.com/WonderGinger/pokemmodb/issues"
   },
   "homepage": "https://github.com/WonderGinger/pokemmodb#readme",
   "dependencies": {
-    "bluebird": "^3.5.1",
     "bootstrap": "^4.1.1",
-    "bootstrap-table": "^1.12.1",
     "datatables.net-bs4": "^1.10.19",
     "datatables.net-buttons-bs4": "^1.5.3",
-    "electron-packager": "^12.1.0",
     "electron-reload": "^1.2.5",
     "jquery": "^3.3.1",
-    "nppm": "^1.0.0",
-    "pokedex-promise-v2": "^3.1.1",
-    "popper.js": "^1.14.3"
+    "popper.js": "^1.14.3",
+    "standard": "^11.0.1"
   }
 }

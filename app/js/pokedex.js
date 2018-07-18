@@ -1,8 +1,8 @@
 const $ = require('jquery')
 require('bootstrap')
 var dt = require('datatables.net-bs4')(window, $)
-var pokedexObj = require('./app/pokedex/pokemmo_full.json')
-var pool = require('./app/pokedex/pool.json')
+var pokedexObj = require('./app/pokedex/pokemmo_min.json')
+var pool = require('./app/pokedex/custom_pool.json')
 
 $(document).ready(function () {
   // populateTable(pool)
