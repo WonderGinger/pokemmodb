@@ -12,12 +12,16 @@ $(document).ready(function () {
 
 function trimDex (pokedex) {
   for (let entry of pokedex) {
-    for (let move of entry.moves) {
-      delete move.version_group_details
-      delete move.move.url
-    }
+    trimEntry(entry)
   }
   return pokedex
+}
+
+function trimEntry (entry) {
+  for (let move of entry.moves) {
+    delete move.version_group_details
+    delete move.move.url
+  }
 }
 
 function fillPool (pokedex) {

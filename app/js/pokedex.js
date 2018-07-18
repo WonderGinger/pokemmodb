@@ -5,8 +5,8 @@ var pokedexObj = require('./app/pokedex/pokemmo_min.json')
 var pool = require('./app/pokedex/custom_pool.json')
 
 $(document).ready(function () {
-  // populateTable(pool)
-  populateTable(pokedexObj)
+  populateTable(pool)
+  // populateTable(pokedexObj)
 })
 
 function populateTable (pokedex) {
