@@ -1,4 +1,4 @@
-const fs = require('fs')
+// const fs = require('fs')
 var pokedexFull = require('./app/pokedex/pokemmo_full.json')
 var customNames = require('./app/pokedex/custom_names.json')
 var pokedexReduced

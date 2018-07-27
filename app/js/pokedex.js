@@ -3,16 +3,16 @@ require('bootstrap')
 var dt = require('datatables.net-bs4')(window, $)
 var pokedexObj = require('./app/pokedex/pokemmo_min.json')
 var pool = require('./app/pokedex/custom_pool.json')
+var table
 
 $(document).ready(function () {
-  populateTable(pool)
-  // populateTable(pokedexObj)
+  // populateTable(pool)
+  populateTable(pokedexObj)
 })
 
 function populateTable (pokedex) {
   console.log(pokedex)
   var trHTML = ''
-  // $('#table').empty()
   $.each(pokedex, function (i, item) {
     let total = 0
     for (j = 0; j <= 5; j++) {
@@ -23,6 +23,10 @@ function populateTable (pokedex) {
     let types = ''
     for (let type of pokedex[i].types) {
       types += `<span class="type ${type.type.name}">${type.type.name}</span></br>`
+    }
+    let typeLiterals = ''
+    for (let type of pokedex[i].types) {
+      typeLiterals += `${type.type.name}-type `
     }
     let abilities = ''
     for (let ability of pokedex[i].abilities) {
@@ -35,9 +39,8 @@ function populateTable (pokedex) {
     trHTML += '<tr><td class="align-middle">' + pokedex[i].id +
       '</td><td class="align-middle">' + `<a href="https://pokemondb.net/pokedex/${name}">${name}</a>` + '</td>' +
       '</td><td class="align-middle">' + types + '</td>' +
-      // HIDDEN COLUMNS FOR SEARCHING [ 3, 4 ]
-      '</td><td class="align-middle">' + abilities + '</td>' +
-      '</td><td class="align-middle">' + moves + '</td>' +
+      // HIDDEN COLUMN FOR SEARCHING [ 3 ]
+      '</td><td>' + abilities + moves + typeLiterals + '</td>' +
 
       '</td><td class="align-middle">' + total + '</td>' +
       '</td><td class="align-middle">' + pokedex[i].stats[5].base_stat + '</td>' +
@@ -50,17 +53,13 @@ function populateTable (pokedex) {
       '</tr>'
   })
   $('#table').append(`<tbody>${trHTML}</tbody>`)
-  $('#table').DataTable({
-    'dom': 'lfrtip',
+  table = $('#table').DataTable({
+    'dom': '<"top"f>rt<"bottom"f><"clear">',
     'paging': false,
     'columnDefs': [
-      { 'orderSequence': ['desc'], 'targets': [ 3, 4, 5, 6, 7, 8, 9 ] },
+      { 'orderData': [ 4, 10 ], 'targets': 4 },
       {
         'targets': [ 3 ],
-        'visible': false
-      },
-      {
-        'targets': [ 4 ],
         'visible': false
       }
     ],
