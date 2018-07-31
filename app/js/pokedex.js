@@ -4,9 +4,37 @@ var dt = require('datatables.net-bs4')(window, $)
 var pokedexObj = require('./app/pokedex/pokemmo_min.json')
 var pool = require('./app/pokedex/custom_pool.json')
 var tableFull
+var currentDex = pokedexObj
 
+var sortHP = true
+var sortAtk = true
+var sortDef = true
+var sortSpa = true
+var sortSpd = true
+var sortSpe = true
 $(document).ready(function () {
+  $('#sort-hp').click(function () {
+    sortHP = !sortHP
+  })
+  $('#sort-atk').click(function () {
+    sortAtk = !sortAtk
+  })
+  $('#sort-def').click(function () {
+    sortDef = !sortDef
+  })
+  $('#sort-spa').click(function () {
+    sortSpa = !sortSpa
+  })
+  $('#sort-spd').click(function () {
+    sortSpd = !sortSpd
+  })
+  $('#sort-spe').click(function () {
+    sortSpe = !sortSpe
+  })
   // populateTable(pool)
+  $('.sort-button').click(function () {
+    updateSort()
+  })
   initTable(pokedexObj)
 })
 
@@ -20,9 +48,23 @@ function sortTotalDefault (stats) {
   return sum
 }
 
-/**
- *  TODO: Analytics table
-*/
+function updateSort () {
+  tableFull.clear()
+  populateTable({
+    pokedex: currentDex,
+    total: (stats) => sortStats(stats)
+  })
+}
+
+function sortStats (stats) {
+  return sortSpe * stats[0].base_stat +
+    sortSpd * stats[1].base_stat +
+    sortSpa * stats[2].base_stat +
+    sortDef * stats[3].base_stat +
+    sortAtk * stats[4].base_stat +
+    sortHP * stats[5].base_stat
+}
+
 function initTable (pokedex) {
   console.log(pokedex)
   tableFull = $('#table').DataTable({
@@ -78,7 +120,7 @@ $('#atk-sort').click(() => {
 })
 
 function populateTable (options) {
-  let pokedex = options.pokedex
+  let pokedex = currentDex = options.pokedex
   $.each(pokedex, function (i, item) {
     let total = 0
     for (let j = 0; j <= 5; j++) total += pokedex[i].stats[j].base_stat

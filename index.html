@@ -31,16 +31,27 @@
                 <a id="reduced" class="dropdown-item" href="#">Reduced</a>
               </div>
             </div>
-            <!-- Stat sorting dropdown -->
-            <div class="btn-group" role="group">
-              <button id="stat-sort" type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Sort</button>
-                <div class="dropdown-menu" aria-labelledby="pool">
-                  <a id="default-sort" class="dropdown-item" href="#">Default</a>
-                  <a id="atk-sort" class="dropdown-item" href="#">Lower Atk Omitted</a>
-                </div>
-            </div>
-            <button id="right" type="button" class="btn btn-outline-primary">Right</button>
+            <!-- Sorting buttons -->
+            <div id="sort-sum" class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label id="sort-hp" class="btn btn-outline-primary sort-button active">
+                    <input type="checkbox" checked autocomplete="off">H
+                </label>
+                <label id="sort-atk" class="btn btn-outline-primary sort-button active">
+                    <input type="checkbox" checked autocomplete="off" >A
+                </label>
+                <label id="sort-def" class="btn btn-outline-primary sort-button active">
+                    <input type="checkbox" checked autocomplete="off" >B
+                </label>
+                <label id="sort-spa" class="btn btn-outline-primary sort-button active">
+                    <input type="checkbox" checked autocomplete="off" >C
+                </label>
+                <label id="sort-spd" class="btn btn-outline-primary sort-button active">
+                    <input type="checkbox" checked autocomplete="off" >D
+                </label>
+                <label id="sort-spe" class="btn btn-outline-primary sort-button active">
+                    <input type="checkbox" checked autocomplete="off" >S
+                </label>
+              </div>
           </div>
         </div>
       </div>
