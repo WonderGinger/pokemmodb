@@ -1,7 +1,7 @@
 {
   "name": "pokemmodb",
   "productName": "PokemmoDB",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A competitively oriented database for the PokeMMO format",
   "main": "main.js",
   "scripts": {
