@@ -3,8 +3,11 @@ require('bootstrap')
 var dt = require('datatables.net-bs4')(window, $)
 var pokedexObj = require('./app/pokedex/pokemmo_min.json')
 var pool = require('./app/pokedex/custom_pool.json')
-var tableFull
+var dataTable
 var currentDex = pokedexObj
+var data = []
+const { remote } = require('electron')
+const { BrowserWindow } = remote
 
 var sortHP = true
 var sortAtk = true
@@ -31,11 +34,29 @@ $(document).ready(function () {
   $('#sort-spe').click(function () {
     sortSpe = !sortSpe
   })
-  // populateTable(pool)
   $('.sort-button').click(function () {
     updateSort()
   })
   initTable(pokedexObj)
+
+  $('#full').click(() => {
+    dataTable.clear()
+    let updatedData = populateTable({
+      pokedex: pokedexObj,
+      total: (stats) => sortTotalDefault(stats)
+    })
+    dataTable.rows.add(updatedData).draw()
+    $('td').addClass('align-middle')
+  })
+  $('#reduced').click(() => {
+    dataTable.clear()
+    let updatedData = populateTable({
+      pokedex: pool,
+      total: (stats) => sortTotalDefault(stats)
+    })
+    dataTable.rows.add(updatedData).draw()
+    $('td').addClass('align-middle')
+  })
 })
 
 function capitalize (string) {
@@ -48,14 +69,6 @@ function sortTotalDefault (stats) {
   return sum
 }
 
-function updateSort () {
-  tableFull.clear()
-  populateTable({
-    pokedex: currentDex,
-    total: (stats) => sortStats(stats)
-  })
-}
-
 function sortStats (stats) {
   return sortSpe * stats[0].base_stat +
     sortSpd * stats[1].base_stat +
@@ -65,16 +78,44 @@ function sortStats (stats) {
     sortHP * stats[5].base_stat
 }
 
+function createEntryPage (entry) {
+  let win = new BrowserWindow({
+    width: 1200,
+    height: 900
+  })
+  win.on('closed', () => {
+    win = null
+  })
+}
+
 function initTable (pokedex) {
   console.log(pokedex)
-  tableFull = $('#table').DataTable({
-    'dom': '<"top"f>rt<"bottom"f><"clear">',
+  let initialData = populateTable({
+    pokedex: pokedexObj,
+    total: (stats) => sortTotalDefault(stats)
+  })
+  dataTable = $('#table').DataTable({
+    'destroy': true,
+    'data': initialData,
+    'dom': `<'top'<'row'fl>>rt<'bottom'<'row'flp>><'clear'>`,
     'paging': false,
     'columnDefs': [
-      { 'orderData': [ 4, 10 ], 'targets': 4 },
+      // When sorting by Total, sort by speed second.
+      { 'targets': 4,
+        'orderData': [ 4, 10 ]
+      },
+      // Metadata column invisible
       {
         'targets': [ 3 ],
         'visible': false
+      },
+      {
+        'targets': 0,
+        'className': 'cell-num cell-fixed img-fluid'
+      },
+      {
+        'targets': [ 1, 2 ],
+        'width': '10%'
       }
     ],
     'language': {
@@ -82,52 +123,38 @@ function initTable (pokedex) {
       searchPlaceholder: 'Search pokedex'
     }
   })
-  populateTable({
-    pokedex: pokedexObj,
-    total: (stats) => sortTotalDefault(stats)
-  })
+  $('td').addClass('align-middle')
 }
 
-$('#full').click(() => {
-  tableFull.clear()
-  populateTable({
-    pokedex: pokedexObj,
-    total: (stats) => sortTotalDefault(stats)
+function updateSort () {
+  dataTable.clear()
+  let updatedData = populateTable({
+    pokedex: currentDex,
+    total: (stats) => sortStats(stats)
   })
-})
-$('#reduced').click(() => {
-  tableFull.clear()
-  populateTable({
-    pokedex: pool,
-    total: (stats) => sortTotalDefault(stats)
-  })
-})
-
-$('#default-sort').click(() => {
-  tableFull.rows().every(function () {
-    let data = this.data()
-    data[4] = data[5] + data[6] + data[7] + data[8] + data[9] + data[10]
-    this.data(data)
-  }).draw()
-})
-
-$('#atk-sort').click(() => {
-  tableFull.rows().every(function () {
-    let data = this.data()
-    data[4] = data[4] - Math.min(data[6], data[8])
-    this.data(data)
-  }).draw()
-})
+  dataTable.rows.add(updatedData).draw()
+}
 
 function populateTable (options) {
-  let pokedex = currentDex = options.pokedex
+  data = []
+  options = options === undefined ? {} : options
+  let pokedex = currentDex = options.pokedex === undefined ? pokedexObj : options.pokedex
   $.each(pokedex, function (i, item) {
+    let id = pokedex[i].id += ''
+    while (id.length < 3) id = '0' + id
+
     let total = 0
     for (let j = 0; j <= 5; j++) total += pokedex[i].stats[j].base_stat
     total = options.total(pokedex[i].stats)
 
     let name = pokedex[i].species.name
     name = capitalize(name)
+
+    let idCell =
+    `<span class="infocard-cell-img">
+        <img src="${pokedex[i].sprites.front_default}" class="img-fixed icon-pkmn" alt="${name} icon">
+      </span>
+      <span class="infocard-cell-data">${id}</span>`
 
     let types = ''
     for (let type of pokedex[i].types) {
@@ -148,10 +175,10 @@ function populateTable (options) {
     for (let move of pokedex[i].moves) {
       moves += `${move.move.name} `
     }
-
-    tableFull.row.add([
-      pokedex[i].id,
-      `<a href="https://pokemondb.net/pokedex/${name}">${name}</a>`,
+    data.push([
+      idCell,
+      `<a id="entry-${i}" href="#">${name}</a>`,
+      // https://pokemondb.net/pokedex/${name}
       types,
       `${abilities} ${moves} ${typeLiterals}`,
       total,
@@ -160,9 +187,7 @@ function populateTable (options) {
       pokedex[i].stats[3].base_stat,
       pokedex[i].stats[2].base_stat,
       pokedex[i].stats[1].base_stat,
-      pokedex[i].stats[0].base_stat
-    ])
+      pokedex[i].stats[0].base_stat])
   })
-  tableFull.draw()
-  $('td').addClass('align-middle')
+  return data
 }

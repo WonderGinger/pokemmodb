@@ -1,8 +1,8 @@
 const {app, BrowserWindow} = require('electron')
 const { Menu } = require('electron')
-// require('electron-reload')(__dirname, {
-//   electron: require(`${__dirname}/node_modules/electron`)
-// })
+require('electron-reload')(__dirname, {
+  electron: require(`${__dirname}/node_modules/electron`)
+})
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
@@ -13,7 +13,6 @@ function createWindow () {
     width: 1600,
     height: 1000
   })
-
   // and load the index.html of the app.
   win.loadFile('index.html')
 
