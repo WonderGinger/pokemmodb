@@ -3,6 +3,7 @@ const { Menu } = require('electron')
 require('electron-reload')(__dirname, {
   electron: require(`${__dirname}/node_modules/electron`)
 })
+const path = require('path')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
@@ -10,6 +11,7 @@ let win
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({
+    icon: path.join(__dirname, '/app/icons/png/64x64.png'),
     width: 1600,
     height: 1000
   })
